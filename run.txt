@@ -2,6 +2,6 @@ cd terraform_code
 terraform init
 terraform plan
 terraform apply -auto-approve
-
-cd ../
-cd
+cd ../argocd_manifests
+aws eks --region <aws_region> update-kubeconfig --name main-eks-cluster
+kubectl apply -f manifest.yaml
