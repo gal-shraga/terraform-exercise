@@ -6,7 +6,7 @@ metadata:
 spec:
  project: default
  source:
-   repoURL: 'https://github.com/gal-shraga/terraform-exercise'
+   repoURL: 'https://github.com/gal-shraga/terraform-exercise.git'
    targetRevision: HEAD
    path: 'argocd/app'
  destination:
