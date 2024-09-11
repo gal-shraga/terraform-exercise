@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: galshraga/simple-webserver:659004d35f266eb58c9350e6be35b006ce095d28
+          image: galshraga/simple-webserver:f029be5c6172c023216f0f222343e388ac7ba794
           ports:
             - containerPort: 80
