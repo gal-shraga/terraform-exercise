@@ -49,11 +49,21 @@ jobs:
       - name: Update Kubernetes Manifests
         run: |
           sed -i 's|image: galshraga/simple-webserver:.*|image: galshraga/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
+
+      - name: "Push image change to git"
+        uses: zakiego/just-git-push@v0.1.0
+        with:
+          email: ${{ GIT_EMAIL }}
+          username: ${{ GIT_USERNAME }}
+          commit-message: "Updated Image"
+          github-token: ${{ GIT_TOKEN }}
+          repository: https://github.com/gal-shraga/terraform-exercise.git
+          branch: feat/new_application
           
-      - name: Commit and Push Changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add argocd/new_app/deployment.yaml
-          git commit -m "Update image to version ${{ github.sha }}"
-          git push
+            #      - name: Commit and Push Changes
+            #        run: |
+            #          git config user.name "github-actions[bot]"
+            #          git config user.email "github-actions[bot]@users.noreply.github.com"
+            #          git add argocd/new_app/deployment.yaml
+          #          git commit -m "Update image to version ${{ github.sha }}"
+          #          git push
