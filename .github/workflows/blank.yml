@@ -27,6 +27,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
     
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -44,26 +47,18 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
           push: true
 
-#      - run: docker push -t ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
-
       - name: Update Kubernetes Manifests
         run: |
           sed -i 's|image: galshraga/simple-webserver:.*|image: galshraga/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
 
-      - name: "Push image change to git"
-        uses: zakiego/just-git-push@v0.1.0
+      - name: Add and Commit Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add argocd/new_app/deployment.yaml
+          git commit -m "Update image to version ${{ github.sha }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          email: ${{ secrets.GIT_EMAIL }}
-          username: ${{ secrets.GIT_USERNAME }}
-          commit-message: "Updated Image"
-          github-token: ${{ secrets.GIT_TOKEN }}
-          repository: https://github.com/gal-shraga/terraform-exercise.git
-          branch: feat/new_application
-          
-            #      - name: Commit and Push Changes
-            #        run: |
-            #          git config user.name "github-actions[bot]"
-            #          git config user.email "github-actions[bot]@users.noreply.github.com"
-            #          git add argocd/new_app/deployment.yaml
-          #          git commit -m "Update image to version ${{ github.sha }}"
-          #          git push
+          branch: ${{ github.head_ref }}
