@@ -38,14 +38,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6.7.0
         with:
           context: argocd/new_app/
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
 
       - name: Update Kubernetes Manifests
         run: |
-          sed -i 's|image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
+          sed -i 's|image: galshraga/simple-webserver:.*|image: galshraga/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
           
       - name: Commit and Push Changes
         run: |
