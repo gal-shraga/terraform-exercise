@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: your-docker-repo/html-app:latest  # Replace with your image
+          image: galshraga/simple-webserver:latest
           ports:
             - containerPort: 80
