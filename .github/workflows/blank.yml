@@ -40,7 +40,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: argocd/new_app/
           tags: galshraga/simple-webserver:${{ github.sha }}
 
       - name: Update Kubernetes Manifests
