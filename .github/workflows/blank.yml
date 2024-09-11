@@ -38,10 +38,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6.7.0
         with:
           context: argocd/new_app/
-          tags: galshraga/simple-webserver:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
+          push: true
+
+#      - run: docker push -t ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
 
       - name: Update Kubernetes Manifests
         run: |
