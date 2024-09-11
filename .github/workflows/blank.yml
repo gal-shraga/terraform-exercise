@@ -44,6 +44,8 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
           push: true
 
+      - run: docker push -t ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
+
       - name: Update Kubernetes Manifests
         run: |
           sed -i 's|image: galshraga/simple-webserver:.*|image: galshraga/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
