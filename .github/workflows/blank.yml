@@ -34,19 +34,18 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: galshraga
-#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v3
         with:
           context: argocd/new_app/
-          tags: galshraga/simple-webserver:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
 
       - name: Update Kubernetes Manifests
         run: |
-          sed -i 's|image: galshraga/simple-webserver:.*|image: galshraga/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
+          sed -i 's|image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}|' argocd/new_app/deployment.yaml
           
       - name: Commit and Push Changes
         run: |
