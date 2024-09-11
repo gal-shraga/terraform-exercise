@@ -42,6 +42,7 @@ jobs:
         with:
           context: argocd/new_app/
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple-webserver:${{ github.sha }}
+          push: true
 
       - name: Update Kubernetes Manifests
         run: |
